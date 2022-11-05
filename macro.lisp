@@ -196,3 +196,52 @@ a
                      (simple-add 3)
                      (simple-add 4)))
 
+
+
+
+;; TECHNIQUE TO AVOID VARIALBE CAPTUREs
+;; variable captures is when a macro unintentionally use variables that outside of its scoped environment
+;; this for has `limit` as a caputrable variable
+(defmacro for ((var start stop) &body body)
+  `(do ((,var ,start (1+ ,var))
+        (limit ,stop))
+     ((> ,var limit))
+     ,@body))
+
+;;(for (limit 1 10)
+;;     (princ limit))
+
+
+;; TECHNIQUE 0: avoid captureable by prior evaluation
+;; Don't fully understand this so you should look it up
+;; TECHNIQUE 1: avoid captureable by using closure
+(defmacro for ((var start stop) &body body)
+  `(do ((b #'(lambda (,var) ,@body))
+        (count ,start (1+ count))
+        (limit ,stop))
+     ((> count limit))
+     (funcall b count)))
+;; this has one drawback of introducing overhead with funcall though
+
+
+;; TECHNIQUE 2: using Gensyms
+(defmacro for ((var start stop) &body body)
+  (let ((gstop (gensym)))
+    `(do ((,var ,start (1+ ,var))
+          (,gstop ,stop))
+       ((> ,var ,gstop)) ,@body)))
+;; TECHNIQUE 3: Avoiding Capture with Packages
+;; so if you define a macro in its own namespace
+;; then the `for` under this is porbably still be fine because
+;; the `limit` variable is under the `your-ns/limit`. So unless
+;; you (let ((your-ns/limit 1))) then it's a problem.
+;; But looks like you won't do that, will you?
+(defmacro for ((var start stop) &body body)
+  `(do ((,var ,start (1+ ,var))
+        (limit ,stop))
+     ((> ,var limit))
+     ,@body))
+
+
+
+;;----------------- Macro pitfalls ---------------------
