@@ -245,3 +245,31 @@ a
 
 
 ;;----------------- Macro pitfalls ---------------------
+;; 1: Number of evaluations
+;; remember that in marco, arguments are form, not values
+;; so you shouldn't evaluate macro arguments more than once because they could produce side-effects
+;;
+
+
+;; 2: Order of evaluations
+;; In LISP, things are evaluated from left-to-right. so when you realize the arguments, it's better
+;; to realize them in that order, because each arguments can have side-effects and they could be related
+
+
+;; 3: Recursion
+;; Macros that calls itself will be infinitely expanded if it has no rules for stop
+;; The macro of `nth` below will never be terminated
+
+(defmacro nth (n lst)
+  `(if (= ,n 0)
+     (car ,lst)
+     (nth (- ,n 1) (cdr ,lst))))
+
+
+;; one way to avoid this
+(defmacro nthe (n lst)
+  `(labels ((nth-fn (n lst)
+                    (if (= n 0)
+                      (car lst)
+                      (nth-fn (- n 1) (cdr lst)))))
+     (nth-fn ,n ,lst)))
