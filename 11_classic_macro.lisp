@@ -10,8 +10,7 @@
               binds)))
 
 
-(mapcar (lambda (x) (+ 1 x)) '( 1 2 3 4))
 
-(macroexpand '(let
-                ((x 1))
-                (+ x 1)))
+(defmacro with-gensyms (syms &body body)
+  `(let ,(mapcar #'(lambda (s) `(,s (gensym))) syms)
+         ,@body))

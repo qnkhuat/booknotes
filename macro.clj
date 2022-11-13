@@ -44,6 +44,10 @@
     ~@(mapv second binds)))
 
 
-(my-let [[a 1]
-         [b 2]]
+(my-let [[a (do
+             (println "HEY")
+             1)]
+         [b (do
+             (println "HEYA")
+             1)]]
         (println a b))
