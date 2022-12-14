@@ -31,7 +31,7 @@
          binds  (map pair# first)
          values (map pair# second)]
      ((fn [@binds]
-       ~@body) @values)))
+        ~@body) @values)))
 
 (defn get-bind
   [x]
@@ -45,9 +45,20 @@
 
 
 (my-let [[a (do
-             (println "HEY")
-             1)]
+              (println "HEY")
+              1)]
          [b (do
-             (println "HEYA")
-             1)]]
+              (println "HEYA")
+              1)]]
         (println a b))
+
+(do
+  (println))
+
+(try
+  (+ 12 3)
+  (finally
+    (+ 1 23)))
+
+(with-meta)
+
