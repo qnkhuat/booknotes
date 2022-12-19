@@ -7,6 +7,18 @@
 ;; continuation gives us 2 things:
 ;; - the binding of all variables at the time of continuation was made
 ;; - the state of computation - what was going to happen from then on
+
+;; example in scheme
+
+;; (define frozen)
+;; (append '(the call/cc returned)
+;;         (list (call-with-current-continuation
+;;                 (lambda (cc)
+;;                   (set! frozen cc
+;;                     'a)))))
+;; => (the call/cc returned a)
+;; (frozen 'again)
+;; => (the call/cc returned again)
 (setq *cont* #'identity)
 
 (defmacro =lambda (parms &body body)
