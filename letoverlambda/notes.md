@@ -28,3 +28,8 @@ We could think of lambda as procedure with states, thus a lot of OOP problem cou
 ```
 a lambda that increases counter every time it's called
 
+### Chapter 3 -- Macro basics
+
+Symbol is a thing designed for efficient comparision, especially with `eq`.
+
+So many things like time-unit, we use symbol instead of string for it.
