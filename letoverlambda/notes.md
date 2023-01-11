@@ -16,7 +16,9 @@ In clojure it's defined by assigning a meta `:dynamic`
 
 Python doesn't have dynamic scoped, so that's why you can't do the same thing as you do with dynamic var in Clojure.
 
-In lisp, the `lambda` is called __function designator__, means it's not a function, but it desginate a list as a function so we can call `function` on it: `(function '(lambda (x) (+ 1 x)))`, A short hand is to use the read-macro: `#'(lambda (x) (+ 1 x))`
+In lisp, the `lambda` is called __function designator__, means it's not a function,
+but it desginate a list as a function so we can call `function` on it: `(function '(lambda (x) (+ 1 x)))`,
+A short hand is to use the read-macro: `#'(lambda (x) (+ 1 x))`
 
 There is no creation over-head for lambda, once they're compiled they're stored persistently in memory and ready for reuse.
 
@@ -33,3 +35,12 @@ a lambda that increases counter every time it's called
 Symbol is a thing designed for efficient comparision, especially with `eq`.
 
 So many things like time-unit, we use symbol instead of string for it.
+
+The author argued that using free variable is a good technique even though it's not idomatic.
+The technique is called Free variable injection in which you have a closure that has a free variable, the varialbe only bound
+when they are used
+
+```lisp
+(let ((x 1))
+  (lambda () x)) ;; < x is free in this lambda but is bound under `let`
+```

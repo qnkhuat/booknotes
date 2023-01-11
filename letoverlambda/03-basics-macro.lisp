@@ -1,3 +1,5 @@
+(ql:quickload "let-over-lambda")
+
 (defmacro sleep-units (value unit)
   (princ unit)
   `(sleep
@@ -51,3 +53,4 @@
 ;; =>                (* N (FACT (- N 1))))))
 ;; =>   (FACT N))
 
+(lol:flatten (list 1 (list 2 3)))

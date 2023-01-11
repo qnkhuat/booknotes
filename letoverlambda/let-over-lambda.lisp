@@ -1,3 +1,5 @@
+(in-package #:let-over-lambda)
+
 (defun group (source n)
   (if (zerop n) (error "Zero length"))
   (labels ((rec (source acc)
