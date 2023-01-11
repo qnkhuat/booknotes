@@ -47,3 +47,13 @@
                 "O!"
                 :start1 0
                 :end1 2)))
+
+(defun o!-symbol-to-g!-symbol (s)
+  (symb "G!" (subseq (symbol-name s) 2)))
+
+(defmacro defmacro! (name args &rest body)
+  (let* ((os (remove-if-not #'o!-symbol-p args))
+         (gs (mapcar #'o!-symbol-to-g!-symbol os)))
+    `(defmacro/g! ,name ,args
+       `(let ,(mapcar #'list (list ,@gs) (list ,@os))
+          ,(progn ,@body)))))
