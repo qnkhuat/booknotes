@@ -44,3 +44,5 @@ when they are used
 (let ((x 1))
   (lambda () x)) ;; < x is free in this lambda but is bound under `let`
 ```
+
+Lisp supports both dynamic scope and lexical scope, some argues this is a bad thing. But the beneift is it gives us a lots of power and make it easy to write macro

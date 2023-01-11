@@ -5,4 +5,7 @@
     #:group
     #:flatten
     #:g!-symbol-p
-    #:defmacro/g!))
+    #:defmacro/g!
+    #:o!-symbol-p
+    #:o!-symbol-to-g!-symbol
+    #:defmacro!))

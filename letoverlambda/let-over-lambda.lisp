@@ -39,3 +39,11 @@
                  `(,s (gensym ,(subseq (symbol-name s) 2))))
                syms)
          ,@body))))
+
+(defun o!-symbol-p (s)
+  (and (symbolp s)
+       (> (length (symbol-name s)) 2)
+       (string= (symbol-name s)
+                "O!"
+                :start1 0
+                :end1 2)))

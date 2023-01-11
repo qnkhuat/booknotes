@@ -52,3 +52,18 @@
 ;; =>                1
 ;; =>                (* N (FACT (- N 1))))))
 ;; =>   (FACT N))
+
+(defmacro/g! nif (expr pos zero neg)
+  `(let ((,g!result ,expr))
+     (cond ((plusp ,g!result) ,pos)
+           ((zerop ,g!result) ,zero)
+           (t ,neg))))
+
+;; a macro that makes sure parameters are evaluated once
+(defmacro! square (o!x)
+  `(* ,g!x ,g!x))
+
+(defparameter x 3)
+
+(square (incf x))
+;; => 16
