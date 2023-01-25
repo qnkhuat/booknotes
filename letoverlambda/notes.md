@@ -26,7 +26,7 @@ We could think of lambda as procedure with states, thus a lot of OOP problem cou
 
 ```lisp
 (let ((counter 0))
-  (lambda () (incf counter)))
+(lambda () (incf counter)))
 ```
 a lambda that increases counter every time it's called
 
@@ -42,7 +42,23 @@ when they are used
 
 ```lisp
 (let ((x 1))
-  (lambda () x)) ;; < x is free in this lambda but is bound under `let`
+(lambda () x)) ;; < x is free in this lambda but is bound under `let`
 ```
 
 Lisp supports both dynamic scope and lexical scope, some argues this is a bad thing. But the beneift is it gives us a lots of power and make it easy to write macro
+
+### Chapter 4 -- Read macros
+- `#.` reader make a form to be evaluate at read time ( for exmaple you want to store a now - where now is the time the code was read )
+- `*` varialbe stores last result from REPL
+- `+` variable stores the current form
+
+`(equal * (eval +))`
+
+The performance myth about: low-level langugage let you write more performance code because it let you write code closer to the hardware is false.
+This is because the lower the langugage, the more it prevents you from writing the optimizsations that actually matter.
+
+`cl-ppcre` is one great example: it's a regular expression langugage where the version in lisp runs twice as fast as the one in PERL.
+This optimizsations come from the ability to optimize at compile time
+
+`##` and `#=` are 2 read macros that let you write self-referential S-expressions
+
