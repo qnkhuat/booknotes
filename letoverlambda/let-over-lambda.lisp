@@ -1,5 +1,12 @@
 (in-package #:let-over-lambda)
 
+(defun mkstr (&rest args)
+  (with-output-to-string (s)
+    (dolist (a args) (princ a s))))
+
+(defun symb (&rest args)
+  (values (intern (apply #'mkstr args))))
+
 (defun group (source n)
   (if (zerop n) (error "Zero length"))
   (labels ((rec (source acc)
@@ -30,6 +37,7 @@
                 :end1 2)))
 
 (defmacro defmacro/g! (name args &rest body)
+  "A macro that make sure all variables that start with `g!` will be gensym-ed."
   (let ((syms (remove-duplicates
                 (remove-if-not #'g!-symbol-p
                                (flatten body)))))
@@ -52,6 +60,7 @@
   (symb "G!" (subseq (symbol-name s) 2)))
 
 (defmacro defmacro! (name args &rest body)
+  "A macro that make sure all variables that starts with `o!` with be evaluate only once."
   (let* ((os (remove-if-not #'o!-symbol-p args))
          (gs (mapcar #'o!-symbol-to-g!-symbol os)))
     `(defmacro/g! ,name ,args

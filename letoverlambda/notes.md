@@ -62,3 +62,10 @@ This optimizsations come from the ability to optimize at compile time
 
 `##` and `#=` are 2 read macros that let you write self-referential S-expressions
 
+### Chapter 5 -- Program that write programs
+
+The real purpose of functional programming is to seperate the functional description of what should happen from the mechanics of how it actualy does happen.
+
+When writing a macro, you want to start with an abstraction first.
+
+The first step is to understand exactly what you want to achieve with understanding the use cases of it first.
