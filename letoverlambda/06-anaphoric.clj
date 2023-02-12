@@ -21,14 +21,21 @@
      ~@(butlast body)
      ~'this))
 
-(def x (alet [accc (atom 0)]
+(def x (alet [acc (atom 0)]
              (fn [n]
                (if (= n :invert)
                  (let [original @this]
                    (reset! this (fn [n]
                                   (if (= n :invert)
                                     (reset! this original)
-                                    (swap! accc (fn [x] (- x n)))))))
-                 (swap! accc (fn [x] (+ n x)))))))
+                                    (swap! acc (fn [x] (- x n)))))))
+                 (swap! acc (fn [x] (+ n x)))))))
 
 (@x 3)
+;; => 3
+(@x 3)
+;; => 6
+(@x :invert)
+;; => #object[sci.impl.fns$fun$arity_1__3549 0x6f4355c5 "sci.impl.fns$fun$arity_1__3549@6f4355c5"]
+(@x 6)
+;; => 0
