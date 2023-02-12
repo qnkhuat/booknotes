@@ -69,3 +69,13 @@ The real purpose of functional programming is to seperate the functional descrip
 When writing a macro, you want to start with an abstraction first.
 
 The first step is to understand exactly what you want to achieve with understanding the use cases of it first.
+
+### Chapter 6 -- Anaphoric macros
+
+are macros that deliberately capture variables from forms supplied to the macro.
+
+```lisp
+(defmacro alambda (parms &body body)
+  `(labels ((self ,parms ,@body))
+    #'self))
+```
