@@ -142,3 +142,83 @@
                        (incf acc n))))
 
 (funcall c2 3)
+
+;; Pandoric macros
+
+(defun let-binding-transform (bs)
+  (if bs
+    (cons
+      (cond ((symbolp (car bs))
+             (list (car bs)))
+            ((consp (car bs))
+             (car bs))
+            (t
+              (error "Bad let bindings")))
+      (let-binding-transform (cdr bs)))))
+
+;; sym is bounded by dlambda
+(defun pandoriclet-get (letargs)
+  `(case sym
+     ,@(mapcar #`((,(car a1)) ,(car a1))
+               letargs)
+     (t (error "Unknown pandoric get : ~a" sym))))
+
+;; sym,val is bounded by dlambda
+(defun pandoriclet-set (letargs)
+  `(case sym
+     ,@(mapcar #`((,(car a1)) (setq ,(car a1) val))
+               letargs)
+     (t (error "Unknown pandoric get : ~a" sym val))))
+
+(defmacro pandoriclet (letargs &rest body)
+  (let ((letargs (cons
+                   '(this)
+                   (let-binding-transform letargs))))
+    `(let (,@letargs)
+       (setq this ,@(last body))
+       ,@(butlast body)
+       (dlambda
+         (:pandoric-get (sym)
+           ,(pandoriclet-get letargs))
+         (:pandoric-set (sym val)
+           ,(pandoriclet-set letargs))
+         (t (&rest args)
+           (apply this args))))))
+
+(setf (symbol-function 'pantest)
+     (pandoriclet ((acc 0))
+       (lambda (n) (incf acc n))))
+
+(pantest 3)
+;; => 3
+(pantest 3)
+;; => 6
+
+(pantest :pandoric-get 'acc)
+;; => 6
+
+(pantest :pandoric-set 'acc 100)
+;; => 100
+
+
+(declaim (inlne get-pandoric))
+
+(defun get-pandoric (box sym)
+  (funcall box :pandoric-get sym))
+
+(defsetf get-pandoric (box sym) (val)
+  `(progn
+     (funcall ,box :pandoric-set ,sym ,val)
+     ,val))
+
+(get-pandoric #'pantest 'acc)
+
+(defmacro! with-pandoric (syms o!box &rest body)
+  `(symbol-macrolet
+     (,@(mapcar #`(,a1 (get-pandoric ,g!box ',a1))
+                syms))
+     ,@body))
+
+(with-pandoric (acc) #'pantest
+  (format t "Value of acc: ~a~%" acc)
+  acc)

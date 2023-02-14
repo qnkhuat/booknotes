@@ -67,6 +67,20 @@
        `(let ,(mapcar #'list (list ,@gs) (list ,@os))
           ,(progn ,@body)))))
 
+(defmacro! dlambda (&rest ds)
+  `(lambda (&rest ,g!args)
+     (case (car ,g!args)
+       ,@(mapcar
+           (lambda (d)
+             `(,(if (eq t (car d))
+                  t
+                  (list (car d)))
+               (apply (lambda ,@(cdr d))
+                      ,(if (eq t (car d))
+                         g!args
+                         `(cdr ,g!args)))))
+           ds))))
+
 (defun |#`-reader| (stream sub-char numarg)
   (declare (ignore sub-char))
   (unless numarg (setq numarg 1))
