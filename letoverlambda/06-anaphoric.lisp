@@ -106,7 +106,6 @@
                       (state going-up)
                       (decf acc n)))))
 
-
 ;; -- Indrection chains
 (defmacro! ichain-before (&rest body)
   `(let ((,g!indir-env this))
@@ -142,6 +141,49 @@
                        (incf acc n))))
 
 (funcall c2 3)
+
+
+;; hotpatching closures
+
+(defmacro alet-hotpatch% (letargs &rest body)
+  `(let ((this) ,@letargs)
+     (setq this ,@(last body))
+     ,@(butlast body)
+     (lambda (&rest args)
+       (if (eq (car args) ':hotpatch)
+         (setq this (cadr args))
+         (apply this args)))))
+
+(setf (symbol-function 'hotpatch-test)
+      (alet-hotpatch% ((acc 0))
+         (lambda (n)
+           (incf acc n))))
+
+(hotpatch-test 3)
+;; => 3
+
+(hotpatch-test :hotpatch
+  (let ((acc 0))
+    (lambda (n)
+      (incf acc (* 2 n)))))
+
+(hotpatch-test 5)
+;; 10
+
+
+;; hot patch is fun and useful but it introduces a this anaphor to the macro
+;; if you want to avoid using this, we have a technique called "anaphor closing"
+;; by using gensym
+
+(defmacro! alet-hotpatch (letargs &rest body)
+  `(let ((,g!this) ,@letargs)
+     (setq ,g!this ,@(last body))
+     ,@(butlast body)
+     (lambda (&rest args)
+       (if (eq (car args) ':hotpatch)
+         (setq ,g!this (cadr args))
+         (apply ,g!this args)))))
+
 
 ;; Pandoric macros
 
@@ -222,3 +264,11 @@
 (with-pandoric (acc) #'pantest
   (format t "Value of acc: ~a~%" acc)
   acc)
+
+
+(with-pandoric (acc) #'pantest
+  (setq acc 5))
+;; => 5
+
+(pantest 1)
+;; => 6
