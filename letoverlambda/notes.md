@@ -81,5 +81,18 @@ For example this macros will inject a `self` variable
     #'self))
 ```
 
+Also learn about pandroic macro, hot patching
 
+## Chapter 7 -- Macro efficiency topics
+> If you tile a floor with tiles the size of your thumbnail, you don't waste many
+> - Paul Graham
 
+Opitmising data structures essentially come down to a concept of "locality" -- frequent access data should be fastest to access
+
+Macros and declartion doesn't work well together, so we need to use read macros
+
+Compiler macros are optimisations to function invocations, not for the functions themselves
+
+Pointer scope like we had in C can be emulated in lisp using closures.
+Pointers are dangerous and the source of many security bugs. It's accidental complexity and could be avoided using closures.
+Rathers than just being a fixnum that can be used as an address, closures are code that is compiled to retrieve and set any sort of data in any sort of env.
