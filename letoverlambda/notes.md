@@ -96,3 +96,9 @@ Compiler macros are optimisations to function invocations, not for the functions
 Pointer scope like we had in C can be emulated in lisp using closures.
 Pointers are dangerous and the source of many security bugs. It's accidental complexity and could be avoided using closures.
 Rathers than just being a fixnum that can be used as an address, closures are code that is compiled to retrieve and set any sort of data in any sort of env.
+
+
+Sorting networks offers a faster way to do sort for a fixed size array.
+The author demonstrate that for an array with size of 3, the orders of doing sort matters.
+
+And there is a way to generate a sorting orders automatically and it's called Batcher's algorithm

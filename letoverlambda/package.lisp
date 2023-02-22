@@ -14,5 +14,6 @@
     #:defmacro/g!
     #:o!-symbol-p
     #:o!-symbol-to-g!-symbol
+    #:alambda
     #:defmacro!
     #:|#`-reader|))

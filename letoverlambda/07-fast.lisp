@@ -149,3 +149,70 @@
       (setf (car tl) x)
       (setf (cddr tl) x))
     (setf (cdr tl) x)))
+
+
+;; -- Sorting networks
+
+
+(defvar tracing-interpret-sn nil)
+
+(defun interpret-sn (data sn)
+  (let ((step 0) (swaps 0))
+    (dolist (i sn)
+      (if tracing-interpret-sn
+        (format t "Step ~a: ~a~%" step data))
+      (if (> #1=(nth (car i) data)
+             #2=(nth (cadr i) data))
+        (progn
+          (rotatef #1# #2#)
+          (incf swaps)))
+      (incf step))
+    (values swaps data)))
+
+(defvar bad-3-sn
+  '((0 1) (0 2) (1 2)))
+
+(defvar good-3-sn
+  '((0 2) (0 1) (1 2)))
+
+(defparameter l '(1 3 2))
+
+(let ((tracing-interpret-sn t))
+  (interpret-sn l bad-3-sn))
+
+;; with good-3-sn it's better all rounds however you want the input list to be
+(let ((tracing-interpret-sn t))
+  (interpret-sn l good-3-sn))
+
+(defun fact (n)
+  (labels ((fact* (n acc)
+              (if (= 0 n)
+                acc
+                (let ((n   (1- n))
+                      (acc (* acc n)))
+                  (fact* n acc)))))
+    (fact* n 1)))
+
+(defun all-sn-perms (n)
+  (let (perms curr)
+    (funcall
+      (alambda (left)
+        (if left
+          (loop for i from 0 to (1- (length left)) do
+            (push (nth i left) curr)
+            (self (append (subseq left 0 i)
+                          (subseq left (1+ i))))
+            (pop curr))
+          (push curr perms)))
+      (loop for i from 1 to n collect i))
+    perms))
+
+(defun average-swap-calc (n sn)
+  (/ (loop for i in (all-sn-perms n) sum
+           (interpret-sn (copy-list i) sn))
+     (fact n)))
+
+(average-swap-calc 3 good-3-sn)
+;; => 7/6
+(average-swap-calc 3 bad-3-sn)
+;; => 3/2
