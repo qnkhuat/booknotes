@@ -102,3 +102,27 @@ Sorting networks offers a faster way to do sort for a fixed size array.
 The author demonstrate that for an array with size of 3, the orders of doing sort matters.
 
 And there is a way to generate a sorting orders automatically and it's called Batcher's algorithm
+
+## Chapter 8 - Implementing Forth
+
+Forth is a stack-based language and often used in embedding devices
+
+Author argue that Forth has a very high local maximum in the space of language design.
+
+In forth there are 2 stacks: parameter stack and return stack
+
+Thead words are basically command that either defined in forth's core, or users.
+
+One interesting aspect about Forth is thread, and it's not the conventional kind of threading.
+Most popular threading are indrect threaded, but most forth implementaiton are direct threaded
+
+Thread is a sequence of forht words that are executed in a particular order.
+
+Threads in Forth provide a powerful way to organize and structure your code, making it easier to understand and maintain.
+
+;; https://en.wikipedia.org/wiki/Threaded_code
+Learn more about direct, indirect, subroutine and token threading.
+
+"subroutine-threaded code" (also "call-threaded code") consists of a series of machine-language "call" instructions (or addresses of functions to "call", as opposed to direct threading's use of "jump")
+
+Token-threaded code implements the thread as a list of indices into a table of operations; the index width is naturally chosen to be as small as possible for density and efficiency.
