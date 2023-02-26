@@ -5,12 +5,8 @@
         '(pstack rstack pc
           dict compiling dtable))
 
-
-
 (defstruct forth-word
   name prev immediate thread)
-
-
 
 (defun forth-lookup (w last)
   (if last
@@ -18,8 +14,6 @@
       last
       (forth-lookup
         w (forth-word-prev last)))))
-
-
 
 (defmacro forth-inner-interpreter ()
   `(loop
@@ -35,8 +29,6 @@
              (push (car pc) pstack)
              (setf pc (cdr pc))))
      until (and (null pc) (null rstack))))
-
-
 
 ;; Prim-form: (name immediate . forms)
 (defvar forth-prim-forms nil)

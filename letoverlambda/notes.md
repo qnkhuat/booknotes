@@ -116,13 +116,22 @@ Thead words are basically command that either defined in forth's core, or users.
 One interesting aspect about Forth is thread, and it's not the conventional kind of threading.
 Most popular threading are indrect threaded, but most forth implementaiton are direct threaded
 
-Thread is a sequence of forht words that are executed in a particular order.
+Thread is a sequence of forth words that are executed in a particular order.
 
 Threads in Forth provide a powerful way to organize and structure your code, making it easier to understand and maintain.
 
 ;; https://en.wikipedia.org/wiki/Threaded_code
+Thread code are code that consists almost completely of calls to subroutines, these subroutines could be machine code or interpreted.
+
 Learn more about direct, indirect, subroutine and token threading.
 
 "subroutine-threaded code" (also "call-threaded code") consists of a series of machine-language "call" instructions (or addresses of functions to "call", as opposed to direct threading's use of "jump")
 
 Token-threaded code implements the thread as a list of indices into a table of operations; the index width is naturally chosen to be as small as possible for density and efficiency.
+
+Found a pretty interesting blog post about forth: https://ratfactor.com/forth/forth_talk_2023.html
+
+"Compiling" in Forth means:
+- Putting the address of a word in memory
+- Putting the code to push a literal onto the stack
+
